@@ -59,6 +59,7 @@ YaMDB отправляет письмо с кодом подтверждения
 Примените миграции:
 
 ```docker-compose exec web python manage.py makemigrations```
+
 ```docker-compose exec web python manage.py migrate --noinput```
 
 Создайте суперпользователя:
