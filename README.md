@@ -64,6 +64,3 @@ YaMDB отправляет письмо с кодом подтверждения
 Создайте суперпользователя:
 
 ```docker-compose exec web python manage.py createsuperuser```
-
-yamdb_final
-![yamdb_workflow](https://github.com/PavelFil98/yamdb_final/actions/workflows/yamdb_workflow.yml/badge.svg)
