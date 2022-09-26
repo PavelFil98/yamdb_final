@@ -40,20 +40,19 @@ YaMDB отправляет письмо с кодом подтверждения
 
 
 После успешного деплоя:
+
 Соберите статические файлы (статику):
 
-docker-compose exec web python manage.py collectstatic --no-input
+```docker-compose exec web python manage.py collectstatic --no-input```
+
 Примените миграции:
 
-docker-compose exec web python manage.py makemigrations
-docker-compose exec web python manage.py migrate --noinput
+```docker-compose exec web python manage.py makemigrations
+docker-compose exec web python manage.py migrate --noinput```
+
 Создайте суперпользователя:
 
-docker-compose exec web python manage.py createsuperuser
-
-или
-
-docker-compose exec web python manage.py loaddata fixtures.json
+```docker-compose exec web python manage.py createsuperuser```
 
 yamdb_final
 ![yamdb_workflow](https://github.com/PavelFil98/yamdb_final/actions/workflows/yamdb_workflow.yml/badge.svg)
