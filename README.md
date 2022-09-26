@@ -16,7 +16,6 @@
 [![Yandex.Cloud](https://img.shields.io/badge/-Yandex.Cloud-464646?style=flat-square&logo=Yandex.Cloud)](https://cloud.yandex.ru/)
 
 
-
 # Ресурсы API YaMDb
 **AUTH**: аутентификация.
 
