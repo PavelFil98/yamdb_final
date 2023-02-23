@@ -1,66 +1,75 @@
-# Проект YaMDb
-Проект YaMDb собирает отзывы (Review) пользователей на произведения (Title). Произведения делятся на категории: "Книги", "Фильмы", "Музыка". Список категорий (Category) может быть расширен.
-Сами произведения в YaMDb не хранятся, здесь нельзя посмотреть фильм или послушать музыку.
-В каждой категории есть произведения: книги, фильмы или музыка. Например, в категории "Книги" могут быть произведения "Винни Пух и все-все-все" и "Марсианские хроники", а в категории "Музыка" — песня "Давеча" группы "Насекомые" и вторая сюита Баха. Произведению может быть присвоен жанр из списка предустановленных (например, "Сказка", "Рок" или "Артхаус"). Новые жанры может создавать только администратор.
-Благодарные или возмущённые читатели оставляют к произведениям текстовые отзывы (Review) и выставляют произведению рейтинг.
+# YaMDb API
 
-## Стек технологий
+## Description
+YaMDb (Yet another Movie database) is a web service for creating reviews and rating movies, books and music.
 
-[![Python](https://img.shields.io/badge/-Python-464646?style=flat-square&logo=Python)](https://www.python.org/)
-[![Django](https://img.shields.io/badge/-Django-464646?style=flat-square&logo=Django)](https://www.djangoproject.com/)
-[![Django REST Framework](https://img.shields.io/badge/-Django%20REST%20Framework-464646?style=flat-square&logo=Django%20REST%20Framework)](https://www.django-rest-framework.org/)
-[![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-464646?style=flat-square&logo=PostgreSQL)](https://www.postgresql.org/)
-[![Nginx](https://img.shields.io/badge/-NGINX-464646?style=flat-square&logo=NGINX)](https://nginx.org/ru/)
-[![gunicorn](https://img.shields.io/badge/-gunicorn-464646?style=flat-square&logo=gunicorn)](https://gunicorn.org/)
-[![docker](https://img.shields.io/badge/-Docker-464646?style=flat-square&logo=docker)](https://www.docker.com/)
-[![Yandex.Cloud](https://img.shields.io/badge/-Yandex.Cloud-464646?style=flat-square&logo=Yandex.Cloud)](https://cloud.yandex.ru/)
+This project represents the API of the YaMDb application. The API interacts with a PostgreSQL database and provides endpoints for getting and modifying data about users, titles, categories, genres, reviews and comments.
 
+The project was developed using Django and Django REST Framework, and deployed using Docker on Yandex.Cloud.
 
-# Ресурсы API YaMDb
-**AUTH**: аутентификация.
+## Stack
+- Python
+- Django
+- Django REST Framework
+- PostgreSQL
+- Docker
+- Yandex.Cloud
 
-**USERS**: пользователи.
+## API Endpoints
+The following endpoints are available for working with the API:
 
-**TITLES**: произведения, к которым пишут отзывы (определённый фильм, книга или песенка).
+### AUTH
+- `/api/v1/auth/token/` - get a JWT token
+- `/api/v1/auth/email/` - send an email with a confirmation code for registration
+- `/api/v1/auth/token/refresh/` - refresh a JWT token
 
-**CATEGORIES**: категории (типы) произведений ("Фильмы", "Книги", "Музыка").
+### USERS
+- `/api/v1/users/` - get a list of all users (admin only)
+- `/api/v1/users/{username}/` - get, update or delete a user (admin only)
+- `/api/v1/users/me/` - get the current user's profile
+- `/api/v1/users/activate/{email}/{activation_code}/` - activate a user account with the provided email and activation code
+- `/api/v1/users/refresh_email/` - send an email with a new confirmation code to update the user's email address
+- `/api/v1/users/set_password/` - set a new password for the current user
 
-**GENRES**: жанры произведений. Одно произведение может быть привязано к нескольким жанрам.
+### TITLES
+- `/api/v1/titles/` - get a list of all titles, create a new title (admin only)
+- `/api/v1/titles/{title_id}/` - get, update or delete a title (admin only)
+- `/api/v1/titles/{title_id}/reviews/` - get a list of all reviews for a title, create a new review
+- `/api/v1/titles/{title_id}/reviews/{review_id}/` - get, update or delete a review
+- `/api/v1/titles/{title_id}/reviews/{review_id}/comments/` - get a list of all comments for a review, create a new comment
+- `/api/v1/titles/{title_id}/reviews/{review_id}/comments/{comment_id}/` - get, update or delete a comment
 
-**REVIEWS**: отзывы на произведения. Отзыв привязан к определённому произведению.
+### CATEGORIES
+- `/api/v1/categories/` - get a list of all categories (admin only)
+- `/api/v1/categories/{slug}/` - get, update or delete a category (admin only)
 
-**COMMENTS**: комментарии к отзывам. Комментарий привязан к определённому отзыву.
+### GENRES
+- `/api/v1/genres/` - get a list of all genres (admin only)
+- `/api/v1/genres/{slug}/` - get, update or delete a genre (admin only)
 
-# Алгоритм регистрации пользователей
-Пользователь отправляет POST-запрос с параметром email на `/api/v1/auth/email/`.
-YaMDB отправляет письмо с кодом подтверждения (confirmation_code) на адрес email (функция в разработке).
-Пользователь отправляет POST-запрос с параметрами email и confirmation_code на `/api/v1/auth/token/`, в ответе на запрос ему приходит token (JWT-токен).
-Эти операции выполняются один раз, при регистрации пользователя. В результате пользователь получает токен и может работать с API, отправляя этот токен с каждым запросом.
+### COMMENTS
+- `/api/v1/comments/` - get a list of all comments (admin only)
+- `/api/v1/comments/{comment_id}/` - get, update or delete a comment (admin only)
 
-# Пользовательские роли
-**Аноним** — может просматривать описания произведений, читать отзывы и комментарии.
+1. Clone this repository to your local machine:
+```bash
+git clone https://github.com/PavelFil98/yamdb_final.git
+```
+2. Navigate to the project directory:
+```bash
+cd yamdb_final
+```
+3 . 
+```bash
+docker-compose build && docker-compose up
+```
+4. Create a superuser to access the Django admin panel:
+```bash
+docker-compose exec web python manage.py createsuperuser
+```
+5. Access the web application at http://localhost:8000/
 
-**Аутентифицированный пользователь (user)** — может читать всё, как и Аноним, дополнительно может публиковать отзывы и ставить рейтинг произведениям (фильмам/книгам/песенкам), может комментировать чужие отзывы и ставить им оценки; может редактировать и удалять свои отзывы и комментарии.
+# API Documentation:
 
-**Модератор (moderator)** — те же права, что и у Аутентифицированного пользователя плюс право удалять и редактировать любые отзывы и комментарии.
-
-**Администратор (admin)** — полные права на управление проектом и всем его содержимым. Может создавать и удалять произведения, категории и жанры. Может назначать роли пользователям.
-
-**Администратор Django** — те же права, что и у роли Администратор.
-
-
-После успешного деплоя:
-
-Соберите статические файлы (статику):
-
-```docker-compose exec web python manage.py collectstatic --no-input```
-
-Примените миграции:
-
-```docker-compose exec web python manage.py makemigrations```
-
-```docker-compose exec web python manage.py migrate --noinput```
-
-Создайте суперпользователя:
-
-```docker-compose exec web python manage.py createsuperuser```
+1. The API documentation can be found at http://localhost:8000/redoc/. 
+2 .You can also use the browsable API at http://localhost:8000/api/v1/.
